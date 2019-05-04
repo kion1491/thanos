@@ -2,16 +2,48 @@
 <html>
 <head>
 	<title>Thanos FingerSnap</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<style type="text/css">
 		*{
 			margin:0;
 		}
 		
-		.container{
+		.header{
+			height: 10vh;
+			background-color: #f0f0f0;
+			text-align: center;
+			vertical-align: middle;
+		}
+
+		.header *{
+			position: relative;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		#choice_list{
+			height: 45vh;
+			display:grid;
+			grid-auto-rows: 30px;
+			grid-template-columns: repeat(7, 1fr);
+			grid-gap: 10px;
+			padding-top: 30px;
+
+		}
+		
+		.choice{
+			text-align: center;
+		}
+
+		.content{
 			display: grid;
 			grid-template-columns: repeat(auto-fit, 1fr);
 			place-content: center center;
-			height: 100vh;
+			height: 40vh;
+		}
+
+		.img_div{
+			position: relative;
 		}
 
 		.img_div img{
@@ -22,22 +54,118 @@
 		.ment_div{
 			text-align: center;
 		}
+
+		#finger_snap_btn{
+			display: block;
+			width: 100%;
+		}
+
+		.hidden_img{
+			display: none;
+		}
+
+		.img_toggle{
+
+		}
+
+		.hidden_choice{
+			display: none;
+		}
 	</style>
 </head>
 <body>
 	<div class="container">
-		<div class="img_div">
-			<img id="thanos_normal" src="thanos_normal.png" alt="thanos_normal">
-			<img id="thanos_finger" src="thanos_finger.png" alt="thanos_finger">
+		<div class="header">
+			<input type="text" id="choice_input" placeholder="Please enter an option.">
+			<button id="write_choice_btn" disabled="true">Enter</button>
 		</div>
-		<div class="ment_div">
-			<p class="thanos_ment">I'll fix your choice disorder.</p>	
+		<div id="choice_list">
 		</div>
+		<div class="content">
+			<div class="img_div">
+				<img id="thanos_normal" src="thanos_normal.png" alt="thanos_normal">
+				<img id="thanos_finger" class="hidden_img" src="thanos_finger.png" alt="thanos_finger">
+				<button id="finger_snap_btn">
+					Finger Snap
+				</button>
+			</div>
+			<div class="ment_div">
+				<p class="thanos_ment">I'll fix your choice disorder.</p>	
+			</div>
+		</div>
+		
 	</div>
 
 	<script type="text/javascript">
 		const thanosFingerImg = document.getElementById("thanos_finger");
-		thanosFingerImg.style.display="none";
+		const thanosNormalImg = document.getElementById("thanos_normal");
+		const choiceInput = document.getElementById("choice_input");
+		const writeChoiceBtn = document.getElementById("write_choice_btn");
+		const fingerSnapBtn = document.getElementById("finger_snap_btn");
+
+
+		const choiceInputWrite = ()=>{
+			if (choiceInput.value=="") {
+				writeChoiceBtn.disabled=true;
+			}else{
+				writeChoiceBtn.disabled=false;
+			};
+		}
+
+		choiceInput.onkeydown  = choiceInputWrite;
+		choiceInput.onmousedown = choiceInputWrite;
+
+		// 입력한 글자를 선택지 후보군에 리스트업 하는 코드
+		writeChoiceBtn.addEventListener("click", ()=>{
+
+			const div = document.createElement("div");
+		    var node = document.createTextNode(choiceInput.value);
+		    div.appendChild(node);
+		 
+		    
+			const choiceList = document.getElementById('choice_list');
+		    choiceList.appendChild(div);
+		    div.classList.add("choice");
+
+			choiceInput.value="";
+			writeChoiceBtn.disabled=true;
+		});
+
+		fingerSnapBtn.addEventListener("click", ()=>{
+			fingerSnapBtn.disabled = true;
+			imgToggle();
+			removeChoice();
+		});
+
+		// 이미지 토글 함수
+		const imgToggle = ()=>{	
+			if (thanosFingerImg.hasClass='hidden_img') {
+				setTimeout(()=>{
+					thanosFingerImg.classList.toggle('hidden_img');
+				}, 2500);
+				setTimeout(()=>{
+					thanosNormalImg.classList.toggle('hidden_img');
+					fingerSnapBtn.disabled = false;
+				}, 2500)
+				thanosFingerImg.classList.toggle('hidden_img');
+				thanosNormalImg.classList.toggle('hidden_img');
+
+			}
+		}
+
+		// 선택지 절반 제거 함수
+		const removeChoice = ()=>{
+			let choiceNum = document.getElementById( 'choice_list' ).childElementCount;
+			let halfChoiceNum = Math.floor(choiceNum/2);
+
+			for(let i=0; i<=halfChoiceNum-1; i++){
+				let choiceNumLength = Math.floor(Math.random()*choiceNum);
+				$("#choice_list").children().eq(choiceNumLength).remove();
+				// choiceNum의 개수에 대해 재선언 해줘야 한다. 총 choice의 개수가 1개 줄어들었기 때문이다.
+				choiceNum = document.getElementById( 'choice_list' ).childElementCount;
+			}
+		}
+
 	</script>
 </body>
 </html>
