@@ -61,22 +61,39 @@
 		}
 
 		.hidden_img{
+			animation-name: thanosFadeOut;
+			animation-duration: 0.3s;
+		}
+
+		.default_hidden_img{
 			display: none;
 		}
 
 		.img_toggle{
 
 		}
-
-		.hidden_choice{
-			display: none;
+		
+		#finger_snap_sound{
+			position: absolute;
+			left: -999px;
 		}
+
+		@keyframes thanosFadeOut{
+			from {
+				opacity: 1;
+			}
+			to {
+				opacity: 0;
+				display: none;
+			}
+		}
+
 	</style>
 </head>
 <body>
 	<div class="container">
 		<div class="header">
-			<input type="text" id="choice_input" placeholder="Please enter an option.">
+			<input type="text" id="choice_input" placeholder="Please enter an option."  onkeypress="if(event.keyCode==13){choiceListUpFunc()}">
 			<button id="write_choice_btn" disabled="true">Enter</button>
 		</div>
 		<div id="choice_list">
@@ -84,14 +101,15 @@
 		<div class="content">
 			<div class="img_div">
 				<img id="thanos_normal" src="thanos_normal.png" alt="thanos_normal">
-				<img id="thanos_finger" class="hidden_img" src="thanos_finger.png" alt="thanos_finger">
-				<button id="finger_snap_btn">
+				<img id="thanos_finger" class="default_hidden_img" src="thanos_finger.png" alt="thanos_finger">
+				<button id="finger_snap_btn" disabled="true">
 					Finger Snap
 				</button>
 			</div>
-			<div class="ment_div">
+			<!-- <div class="ment_div">
 				<p class="thanos_ment">I'll fix your choice disorder.</p>	
-			</div>
+			</div> -->
+			<audio id="finger_snap_sound" controls src="Finger-snap.mp3"></audio>
 		</div>
 		
 	</div>
@@ -102,7 +120,8 @@
 		const choiceInput = document.getElementById("choice_input");
 		const writeChoiceBtn = document.getElementById("write_choice_btn");
 		const fingerSnapBtn = document.getElementById("finger_snap_btn");
-
+		const fingerSnapSound = document.getElementById("finger_snap_sound");
+		//const choiceList = document.getElementById("choice_list");
 
 		const choiceInputWrite = ()=>{
 			if (choiceInput.value=="") {
@@ -112,45 +131,64 @@
 			};
 		}
 
+		// chice list가 비어있다면(선택지가 없다면) 핑거스냅 버튼은 비활성화 된다.
+		const fingerSnapBtnTrigger = ()=>{
+			if ($('.choice')) {
+				fingerSnapBtn.disabled = false;
+			} else{
+				fingerSnapBtn.disabled = true;
+			}
+		}
+
 		choiceInput.onkeydown  = choiceInputWrite;
 		choiceInput.onmousedown = choiceInputWrite;
 
-		// 입력한 글자를 선택지 후보군에 리스트업 하는 코드
+		// 입력한 글자를 선택지 후보군에 리스트업 하는 함수
+		const choiceListUpFunc = ()=>{
+			if(writeChoiceBtn.disabled==false){
+				const div = document.createElement("div");
+			    let node = document.createTextNode(choiceInput.value);
+			    div.appendChild(node);
+				const choiceList = document.getElementById('choice_list');
+			    choiceList.appendChild(div);
+			    div.classList.add("choice");
+
+				choiceInput.value="";
+				writeChoiceBtn.disabled=true;
+				fingerSnapBtnTrigger();
+			}else(alert("Bring Me Options!!!!!!!!!"))
+		}
+
+		// writeChoiceBtn 동작 함수
 		writeChoiceBtn.addEventListener("click", ()=>{
-
-			const div = document.createElement("div");
-		    var node = document.createTextNode(choiceInput.value);
-		    div.appendChild(node);
-		 
-		    
-			const choiceList = document.getElementById('choice_list');
-		    choiceList.appendChild(div);
-		    div.classList.add("choice");
-
-			choiceInput.value="";
-			writeChoiceBtn.disabled=true;
+			choiceListUpFunc();
 		});
 
 		fingerSnapBtn.addEventListener("click", ()=>{
 			fingerSnapBtn.disabled = true;
 			imgToggle();
 			removeChoice();
+			fingerSnapBtnTrigger();
 		});
 
 		// 이미지 토글 함수
 		const imgToggle = ()=>{	
-			if (thanosFingerImg.hasClass='hidden_img') {
-				setTimeout(()=>{
-					thanosFingerImg.classList.toggle('hidden_img');
-				}, 2500);
-				setTimeout(()=>{
-					thanosNormalImg.classList.toggle('hidden_img');
-					fingerSnapBtn.disabled = false;
-				}, 2500)
-				thanosFingerImg.classList.toggle('hidden_img');
-				thanosNormalImg.classList.toggle('hidden_img');
+			$("#finger_snap_btn").toggle();
+			$(".ment_div").toggle();
 
-			}
+			setTimeout(()=>{
+				$('#thanos_normal').slideToggle(200, function(){
+					$("#thanos_finger").slideToggle(2000, function(){
+						fingerSnapSound.play();
+						setTimeout(()=>{
+							$("#thanos_finger").toggle();
+							$('#thanos_normal').toggle();
+							$("#finger_snap_btn").toggle();
+							$(".ment_div").toggle();
+						})
+					});
+				});
+			}, 500)
 		}
 
 		// 선택지 절반 제거 함수
