@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Thanos FingerSnap</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<style type="text/css">
-		*{
-			margin:0;
+		* {
+			margin: 0;
 		}
-		
-		.header{
+
+		.header {
 			height: 10vh;
 			background-color: #645693;
 			text-align: center;
@@ -17,7 +18,7 @@
 			box-shadow: 5px 5px 5px 5px grey;
 		}
 
-		.header *{
+		.header * {
 			position: relative;
 			top: 50%;
 			left: 50%;
@@ -29,55 +30,55 @@
 			text-align: center
 		}
 
-		#choice_input:focus{
+		#choice_input:focus {
 			outline: none;
 		}
 
-		#write_choice_btn{
+		#write_choice_btn {
 			width: 100px;
 		}
 
-		#write_choice_btn:hover{
+		#write_choice_btn:hover {
 			opacity: 0.8;
 		}
 
-		#choice_list{
+		#choice_list {
 			height: 45vh;
-			display:grid;
+			display: grid;
 			grid-auto-rows: 30px;
 			grid-template-columns: repeat(6, 1fr);
 			grid-gap: 2rem;
 			padding-top: 30px;
 
 		}
-		
-		.choice{
+
+		.choice {
 			text-align: center;
 			font-size: 30px;
 			font-weight: bold;
 		}
 
-		.content{
+		.content {
 			display: grid;
 			grid-template-columns: repeat(auto-fit, 1fr);
 			place-content: center center;
 			height: 40vh;
 		}
 
-		.img_div{
+		.img_div {
 			position: relative;
 		}
 
-		.img_div img{
+		.img_div img {
 			width: 350px;
 			height: 200px;
 		}
-		
+
 		/*.ment_div{
 			text-align: center;
 		}*/
 
-		#finger_snap_btn{
+		#finger_snap_btn {
 			display: block;
 			width: 100%;
 			height: 40px;
@@ -85,44 +86,42 @@
 			font-size: 20px;
 		}
 
-		#finger_snap_btn:hover{
+		#finger_snap_btn:hover {
 			opacity: 0.8;
 		}
 
-		.hidden_img{
+		.hidden_img {
 			animation-name: thanosFadeOut;
 			animation-duration: 0.3s;
 		}
 
-		.default_hidden_img{
+		.default_hidden_img {
 			display: none;
 		}
 
-		.img_toggle{
-
-		}
-		
-		#finger_snap_sound{
+		#finger_snap_sound {
 			position: absolute;
 			left: -999px;
 		}
 
-		@keyframes thanosFadeOut{
+		@keyframes thanosFadeOut {
 			from {
 				opacity: 1;
 			}
+
 			to {
 				opacity: 0;
 				display: none;
 			}
 		}
-
 	</style>
 </head>
+
 <body>
 	<div class="container">
 		<div class="header">
-			<input type="text" id="choice_input" placeholder="Please enter an option."  onkeypress="if(event.keyCode==13){choiceListUpFunc()}">
+			<input type="text" id="choice_input" placeholder="Please enter an option."
+				onkeypress="if(event.keyCode==13){choiceListUpFunc()}">
 			<button id="write_choice_btn" disabled="true">Enter</button>
 		</div>
 		<div id="choice_list">
@@ -140,7 +139,7 @@
 			</div> -->
 			<audio id="finger_snap_sound" controls src="Finger-snap.mp3"></audio>
 		</div>
-		
+
 	</div>
 
 	<script type="text/javascript">
@@ -152,90 +151,93 @@
 		const fingerSnapSound = document.getElementById("finger_snap_sound");
 		//const choiceList = document.getElementById("choice_list");
 
-		const choiceInputWrite = ()=>{
-			if (choiceInput.value=="") {
-				writeChoiceBtn.disabled=true;
-			}else{
-				writeChoiceBtn.disabled=false;
+		const choiceInputWrite = () => {
+			if (choiceInput.value == "") {
+				writeChoiceBtn.disabled = true;
+			} else {
+				writeChoiceBtn.disabled = false;
 			};
 		}
 
 		// chice list가 비어있다면(선택지가 없다면) 핑거스냅 버튼은 비활성화 된다.
-		const fingerSnapBtnTrigger = ()=>{
+		const fingerSnapBtnTrigger = () => {
 			if ($('.choice')) {
 				fingerSnapBtn.disabled = false;
-			} else{
+			} else {
 				fingerSnapBtn.disabled = true;
 			}
 		}
 
-		choiceInput.onkeydown  = choiceInputWrite;
+		choiceInput.onkeydown = choiceInputWrite;
 		choiceInput.onmousedown = choiceInputWrite;
 
 		// 입력한 글자를 선택지 후보군에 리스트업 하는 함수
-		const choiceListUpFunc = ()=>{
-			if(writeChoiceBtn.disabled==false){
+		const choiceListUpFunc = () => {
+			if (writeChoiceBtn.disabled == false) {
 				const div = document.createElement("div");
-			    let node = document.createTextNode(choiceInput.value);
-			    div.appendChild(node);
+				let node = document.createTextNode(choiceInput.value);
+				div.appendChild(node);
 				const choiceList = document.getElementById('choice_list');
-			    choiceList.appendChild(div);
-			    div.classList.add("choice");
+				choiceList.appendChild(div);
+				div.classList.add("choice");
 
-				choiceInput.value="";
-				writeChoiceBtn.disabled=true;
+				choiceInput.value = "";
+				writeChoiceBtn.disabled = true;
 				fingerSnapBtnTrigger();
-			}else(alert("Bring Me Options!!!!!!!!!"))
+			} else (alert("Bring Me Options!!!!!!!!!"))
 		}
 
 		// writeChoiceBtn 동작 함수
-		writeChoiceBtn.addEventListener("click", ()=>{
+		writeChoiceBtn.addEventListener("click", () => {
 			choiceListUpFunc();
 		});
 
 		// fingersnap 버튼 동작 함수
-		fingerSnapBtn.addEventListener("click", ()=>{
+		fingerSnapBtn.addEventListener("click", () => {
 			fingerSnapBtn.disabled = true;
 			imgToggle();
-			setTimeout(()=>{
+			setTimeout(() => {
 				removeChoice();
 			}, 3000)
 			fingerSnapBtnTrigger();
 		});
 
 		// 이미지 토글 함수
-		const imgToggle = ()=>{	
+		const imgToggle = () => {
 			$("#finger_snap_btn").toggle();
 			$(".ment_div").toggle();
 
-			setTimeout(()=>{
-				$('#thanos_normal').slideToggle(200, function(){
-					$("#thanos_finger").slideToggle(2000, function(){
+			setTimeout(() => {
+				$('#thanos_normal').toggle(200, function () {
+					$("#thanos_finger").toggle(2000, function () {
 						fingerSnapSound.play();
-						
-							$("#thanos_finger").toggle();
-							$('#thanos_normal').toggle();
-							$("#finger_snap_btn").toggle();
-							$(".ment_div").toggle();
-						
+
+						$("#thanos_finger").toggle();
+						$('#thanos_normal').toggle();
+						$("#finger_snap_btn").toggle();
+						$(".ment_div").toggle();
+
 					});
 				});
 			}, 500)
 		}
 
 		// 선택지 절반 제거 함수
-		const removeChoice = ()=>{
-			let choiceNum = document.getElementById( 'choice_list' ).childElementCount;
-			let halfChoiceNum = Math.floor(choiceNum/2);
+		const removeChoice = () => {
+			//childElementCount => 자식 요소의 개수를 반환하는 속성.
 
-			for(let i=0; i<=halfChoiceNum-1; i++){
-				let choiceNumLength = Math.floor(Math.random()*choiceNum);
+			let choiceNum = document.getElementById('choice_list').childElementCount;
+			let halfChoiceNum = Math.floor(choiceNum / 2);
+			console.log(halfChoiceNum);
+			for (let i = 0; i <= halfChoiceNum - 1; i++) {
+				let choiceNumLength = Math.floor(Math.random() * choiceNum);
 				$("#choice_list").children().eq(choiceNumLength).remove();
 				// choiceNum의 개수에 대해 재선언 해줘야 한다. 총 choice의 개수가 1개 줄어들었기 때문이다.
-				choiceNum = document.getElementById( 'choice_list' ).childElementCount;
+				choiceNum = document.getElementById('choice_list').childElementCount;
 			}
 		}
 
 	</script>
 </body>
+
 </html>
