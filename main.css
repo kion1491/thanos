@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+}
+
+body{
+    height: 100vh;
+    /* overflow-y: hidden; */
+}
+
+.header {
+    height: 10vh;
+    background-color: #645693;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+    box-shadow: 5px 5px 5px 5px grey;
+    position: relative;
+}
+
+.header * {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    height: 40px;
+    float: left;
+    font-size: 20px;
+    text-align: center
+}
+
+#choice_input:focus {
+    outline: none;
+}
+
+#write_choice_btn {
+    width: 100px;
+}
+
+#write_choice_btn:hover {
+    opacity: 0.8;
+}
+
+#choice_list {
+    height: 45vh;
+    display: grid;
+    grid-auto-rows: 30px;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 2rem;
+    padding-top: 30px;
+
+}
+
+.choice {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 1fr);
+    place-content: center center;
+    height: 30vh;
+}
+
+.img_div {
+    position: relative;
+    width: 350px;
+    height: 250px;
+}
+
+.img_div img {
+    width: 350px;
+    height: 200px;
+}
+
+.img_div .info_balloon{
+    position: absolute;
+    /* border: 2px solid #000; */
+    background-color: #645693;
+    border-radius: 5px;
+    width: 240px;
+    padding: 10px;
+    top: 20px;
+    right: -140px;
+}
+
+.img_div .info_balloon:before{
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #645693;
+    transform: rotate(45deg);
+    left: -5px;
+    top: 15px;
+}
+
+#finger_snap_btn {
+    display: block;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+#finger_snap_btn:hover {
+    opacity: 0.8;
+}
+
+.hidden_img {
+    animation-name: thanosFadeOut;
+    animation-duration: 0.3s;
+}
+
+.default_hidden_img {
+    display: none;
+}
+
+#finger_snap_sound {
+    position: absolute;
+    left: -999px;
+}
+
+@keyframes thanosFadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+        display: none;
+    }
+}
