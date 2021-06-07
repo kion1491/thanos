@@ -77,13 +77,14 @@ body {
 
 .img_div .info_balloon {
     position: absolute;
-    /* border: 2px solid #000; */
+    border: 3px solid #000;
     background-color: #645693;
     border-radius: 5px;
     width: 240px;
     padding: 10px;
     top: 20px;
     right: -140px;
+    z-index: 10;
 }
 
 .img_div .info_balloon:before {
@@ -95,6 +96,19 @@ body {
     transform: rotate(45deg);
     left: -5px;
     top: 15px;
+    z-index: 2;
+}
+
+.img_div .info_balloon:after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: #000;
+    transform: rotate(45deg);
+    left: -8px;
+    top: 14px;
+    z-index: 1;
 }
 
 #finger_snap_btn {
@@ -109,11 +123,6 @@ body {
     opacity: 0.8;
 }
 
-/* .hidden_img {
-    animation-name: thanosFadeOut;
-    animation-duration: 0.3s;
-} */
-
 .default_hidden_img {
     display: none;
 }
@@ -121,15 +130,4 @@ body {
 #finger_snap_sound {
     position: absolute;
     left: -999px;
-}
-
-@keyframes thanosFadeOut {
-    from {
-        opacity: 1;
-    }
-
-    to {
-        opacity: 0;
-        display: none;
-    }
 }

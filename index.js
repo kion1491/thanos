@@ -1,4 +1,4 @@
-const thanosFingerImg = document.getElementById("thanos_finger");
+// const thanosFingerImg = document.getElementById("thanos_finger");
 const thanosNormalImg = document.getElementById("thanos_normal");
 const choiceInput = document.getElementById("choice_input");
 const fingerSnapBtn = document.getElementById("finger_snap_btn");
@@ -57,7 +57,7 @@ fingerSnapBtn.addEventListener("click", () => {
 });
 
 // 이미지 토글 함수
-const imgToggle = () => {
+let imgToggle = () => {
     $("#finger_snap_btn").toggle();
     $(".info_balloon").toggle();
 
