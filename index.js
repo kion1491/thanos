@@ -59,17 +59,17 @@ fingerSnapBtn.addEventListener("click", () => {
 // 이미지 토글 함수
 const imgToggle = () => {
     $("#finger_snap_btn").toggle();
-    $(".ment_div").toggle();
+    $(".info_balloon").toggle();
 
     setTimeout(() => {
-        $('#thanos_normal').toggle(200, function () {
-            $("#thanos_finger").toggle(2000, function () {
+        $('#thanos_normal').fadeOut(200, function () {
+            $("#thanos_finger").fadeIn(2000, function () {
                 fingerSnapSound.play();
 
                 $("#thanos_finger").toggle();
-                $('#thanos_normal').toggle();
+                $('#thanos_normal').show();
                 $("#finger_snap_btn").toggle();
-                $(".ment_div").toggle();
+                $(".info_balloon").toggle();
 
             });
         });
